@@ -25,6 +25,8 @@ const EditInfo = props => {
 		[ifullname, iemail, iphone, iaddress]
 	);
 
+	// Never use <form> </form> after this return in views like this
+
 	return (
 		<>
 			<div className="mx-auto">
