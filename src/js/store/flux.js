@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -23,16 +25,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			]
 		},
 		actions: {
-			saveInfo: (fullname, email, phone, address) => {
-				const newInfo = {
-					fullname: fullname.current.value,
-					email: email.current.value,
-					phone: phone.current.value,
-					address: address.current.value
-				};
-				const storage = getStore();
-				storage.contactObj.push(newInfo);
-				setStore(storage);
+			saveInfo: (objContact, props) => {
+				// console.log(getStore());
+				fetch("https://assets.breatheco.de/apis/fake/contact/", {
+					method: "POST",
+					body: JSON.stringify(objContact),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+					.then(res => res.json())
+					.then(newContacts => {
+						alert("New Contact Added");
+						props.history.push("/rigo");
+					})
+					.catch(error => console.error("Error:", error));
 			},
 			delete: id => {
 				fetch("https://assets.breatheco.de/apis/fake/contact/" + id, {
@@ -83,6 +90,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			}
 		}
 	};
+};
+
+getState.propTypes = {
+	history: PropTypes.objects
 };
 
 export default getState;
